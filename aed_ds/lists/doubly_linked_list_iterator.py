@@ -4,7 +4,7 @@ from aed_ds.exceptions import EmptyListException, NoSuchElementException
 class DoublyLinkedListIterator(TwoWayIterator):
     def __init__(self, doubly_linked_list):
         self.doubly_linked_list = doubly_linked_list
-        self.full_forward()
+        self.rewind()
 
     def has_next(self): 
         return self.current_node != None

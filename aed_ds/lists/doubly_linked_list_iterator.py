@@ -1,3 +1,4 @@
+from ..exceptions import *
 from ..tad_iterator import TwoWayIterator
 from aed_ds.exceptions import EmptyListException, NoSuchElementException
 

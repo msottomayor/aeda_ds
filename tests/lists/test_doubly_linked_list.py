@@ -40,7 +40,7 @@ class TestDoublyLinkedList(unittest.TestCase):
         self.assertEqual(self.list.get(0), "element 1")
         self.assertEqual(self.list.get(1), "element 2")
     
-    def test_insert(self):  
+    def test_insert(self): 
         self.list.insert("element 1", 0)
         with self.assertRaises(InvalidPositionException):
             self.list.insert("element X", 10)

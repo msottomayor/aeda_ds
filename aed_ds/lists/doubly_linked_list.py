@@ -26,11 +26,7 @@ class DoublyLinkedList(SinglyLinkedList):
         self.num_elements += 1
 
     def insert(self, element, position):
-<<<<<<< HEAD
         if position < 0 or position > self.size():
-=======
-        if position > self.num_elements or position < 0:
->>>>>>> upstream/develop
             raise InvalidPositionException()
         elif position == 0:
             return self.insert_first(element)
@@ -52,61 +48,6 @@ class DoublyLinkedList(SinglyLinkedList):
 
     def remove_first(self): 
         if self.num_elements == 1:
-<<<<<<< HEAD
-            old_node = self.head
-            self.make_empty()
-            return old_node.get_element()
-        elif self.num_elements == 0:
-            raise EmptyListException()
-        old_head = self.head
-        self.head = self.head.get_next()
-        self.head.set_previous(None)
-        self.num_elements -= 1
-        return old_head.get_element()
-
-    def remove_last(self):
-        if self.size() == 0:
-            raise EmptyListException()        
-        elif self.size() == 1:
-            old_node = self.head
-            self.make_empty()
-            return old_node.get_element()
-        elif self.size() == 2:
-            self.head.set_next(None)
-            old_node = self.head
-            self.tail.set_previous(None)
-            self.tail = self.head
-            self.num_elements -= 1
-            return old_node.get_element()
-        else:
-            old_node = self.tail
-            new_tail = self.tail.get_previous()
-            new_tail.set_next(None)
-            self.tail.set_previous(None)
-            self.tail = new_tail
-            self.num_elements -= 1
-            return old_node.get_element()
-
-    def remove(self, position):
-        if position < 0 or position > self.size() - 1:
-            raise InvalidPositionException()
-        elif position == 0:
-            return self.remove_first()
-        elif position == self.size() - 1:
-            return self.remove_last()
-        cur_node = self.head
-        idx = 0
-        while cur_node:
-            if idx == position:
-                prev_node = cur_node.get_previous()
-                next_node = cur_node.get_next()
-                prev_node.set_next(next_node)
-                next_node.set_previous(prev_node)
-                self.num_elements -= 1
-                return cur_node.get_element()
-            cur_node = cur_node.get_next()
-            idx += 1
-=======
             old_head = self.head
             self.head = None
             self.tail = None
@@ -163,7 +104,6 @@ class DoublyLinkedList(SinglyLinkedList):
 
                     current = current.get_next()
                     index += 1
->>>>>>> upstream/develop
 
     def iterator(self): 
         return DoublyLinkedListIterator(self)

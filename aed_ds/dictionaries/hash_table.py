@@ -1,17 +1,23 @@
 from .tad_dictionary import Dictionary
+from .item import Item
 from ..exceptions import NoSuchElementException, DuplicatedKeyException
 from ..lists.singly_linked_list import SinglyLinkedList
 
 class HashTable(Dictionary):
+
     def __init__(self, size=101):
         self.num_items = 0
-        self.keys = SinglyLinkedList()
+        self.list_keys = SinglyLinkedList()
+        self.lenght = size
 
-    # Returns the number of elements in the dictionary.
-    def size(self): pass
+    def hash_function(self, key):
+        return hash(key)
 
-    # Returns true if the dictionary is full.
-    def is_full(self): pass
+    def size(self):
+        return self.num_items
+
+    def is_full(self):
+        return self.size() == self.lenght
 
     # Returns the value associated with key k.
     # Throws NoSuchElementException
@@ -19,7 +25,13 @@ class HashTable(Dictionary):
 
     # Inserts a new value, associated with key k.
     # Throws DuplicatedKeyException
-    def insert(self, k, v): pass
+    def insert(self, k, v):
+        if self.list_keys.find(k) != -1:
+            raise DuplicatedKeyException()
+        self.list_keys.insert_last(k)
+        key = self.hash_function(k)
+        new_item = Item(key, v)        
+        self.num_items += 1
 
     # Updates the value associated with key k.
     # Throws NoSuchElementException

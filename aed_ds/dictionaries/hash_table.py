@@ -52,7 +52,7 @@ class HashTable(Dictionary):
     # Inserts a new value, associated with key k.
     # Throws DuplicatedKeyException
     def insert(self, key, value): 
-        if self.key_exists():
+        if self.key_exists(key):
             raise DuplicatedKeyException()
         idx = self.hash_function(key)
         item = Item(key, value)

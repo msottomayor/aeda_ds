@@ -17,7 +17,6 @@ class HashTable(Dictionary):
     def hash_function(self, key):
         return sum([ord(c) for c in key]) % self.array_size
 
-    # Returns true if key already exists
     def key_exists(self, key): 
         idx = self.hash_function(key)   
         it = self.table[idx].iterator()
@@ -26,18 +25,14 @@ class HashTable(Dictionary):
             if cur_item.get_key() == key:
                 return True
     
-    # Returns the number of elements in the dictionary.
     def size(self): 
         return self.num_items
 
-    # Returns true if the dictionary is full.
     def is_full(self): 
         if self.num_items == 0:
             return False
         return (self.num_items / self.array_size) >= 0.3
 
-    # Returns the value associated with key k.
-    # Throws NoSuchElementException
     def get(self, key):
         idx = self.hash_function(key)
         it = self.table[idx].iterator()
@@ -47,8 +42,6 @@ class HashTable(Dictionary):
                 return cur_item.get_value()
         raise NoSuchElementException()
 
-    # Inserts a new value, associated with key k.
-    # Throws DuplicatedKeyException
     def insert(self, key, value): 
         if self.key_exists(key):
             raise DuplicatedKeyException()
@@ -57,8 +50,6 @@ class HashTable(Dictionary):
         self.table[idx].insert_last(item)
         self.num_items += 1
                 
-    # Updates the value associated with key k.
-    # Throws NoSuchElementException
     def update(self, key, value):
         idx = self.hash_function(key)
         it = self.table[idx].iterator()
@@ -67,12 +58,19 @@ class HashTable(Dictionary):
             if cur_item.get_key() == key:
                 return cur_item.set_value(value)
         
-
-    # Removes the key k, and the value associated with it.
-    # Throws NoSuchElementException
-    def remove(self, key): pass
-
-    # Returns a List with all the keys in the dictionary.
+    def remove(self, key):
+        if not self.key_exists(key):
+            raise NoSuchElementException()
+        collision_list = self.table[self.hash_function(key)]
+        it = collision_list.iterator()
+        while it.has_next():
+            pos = 0
+            cur_item = it.next()
+            if cur_item.get_key() == key:
+                return collision_list.remove(pos)
+            cur_item = cur_item.net()
+            pos += 1
+        
     def keys(self):
         for idx in range(self.array_size):  
             colision_list = self.table[idx]
@@ -82,7 +80,6 @@ class HashTable(Dictionary):
                 if cur_item.get_key():
                     print(cur_item.get_key())
         
-    # Returns a List with all the values in the dictionary.
     def values(self): 
         for idx in range(self.array_size):  
             colision_list = self.table[idx]
@@ -92,7 +89,6 @@ class HashTable(Dictionary):
                 if cur_item.get_key():
                     print(cur_item.get_value())
 
-    # Returns a List of lists, with all the key value pairs in the dictionary.
     def items(self): 
         for idx in range(self.array_size):  
             colision_list = self.table[idx]

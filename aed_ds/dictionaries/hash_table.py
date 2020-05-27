@@ -52,8 +52,8 @@ class HashTable(Dictionary):
     # Inserts a new value, associated with key k.
     # Throws DuplicatedKeyException
     def insert(self, key, value): 
-        # if key_exists():
-        #     raise DuplicatedKeyException()
+        if self.key_exists():
+            raise DuplicatedKeyException()
         idx = self.hash_function(key)
         item = Item(key, value)
         self.table[idx].insert_last(item)

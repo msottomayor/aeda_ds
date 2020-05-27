@@ -3,43 +3,69 @@ from .item import Item
 from ..exceptions import NoSuchElementException, DuplicatedKeyException
 from ..lists.singly_linked_list import SinglyLinkedList
 
-class HashTable(Dictionary):
+import ctypes
 
+class HashTable(Dictionary):
     def __init__(self, size=101):
         self.num_items = 0
-        self.list_keys = SinglyLinkedList()
-        self.lenght = size
+        self.array_size = size
+        self.table = (ctypes.py_object * self.array_size)()
+        
+        for idx in range(self.array_size):
+            self.table[idx] = SinglyLinkedList()
 
     def hash_function(self, key):
-        return hash(key)
+        return sum([ord(c) for c in key]) % self.array_size
 
-    def size(self):
+    # Returns true if key already exists
+    def key_exists(self, key): 
+        idx = self.hash_function(key)   
+        colision_list = self.table[idx]
+        it = colision_list.iterator()
+        while it.has_next():
+            cur_item = it.next()
+            if cur_item.get_key() == key:
+                return True
+    
+    # Returns the number of elements in the dictionary.
+    def size(self): 
         return self.num_items
 
-    def is_full(self):
-        return self.size() == self.lenght
+    # Returns true if the dictionary is full.
+    def is_full(self): 
+        if self.num_items == 0:
+            return False
+        return (self.num_items / self.array_size) >= 0.3
 
     # Returns the value associated with key k.
     # Throws NoSuchElementException
-    def get(self, k): pass
+    def get(self, key):
+        idx = self.hash_function(key)
+        colision_list = self.table[idx]
+        it = colision_list.iterator()
+        while it.has_next():
+            cur_item = it.next()
+            if cur_item.get_key() == key:
+                return cur_item.get_value()
+        raise NoSuchElementException()
 
     # Inserts a new value, associated with key k.
     # Throws DuplicatedKeyException
-    def insert(self, k, v):
-        if self.list_keys.find(k) != -1:
-            raise DuplicatedKeyException()
-        self.list_keys.insert_last(k)
-        key = self.hash_function(k)
-        new_item = Item(key, v)        
+    def insert(self, key, value): 
+        # if key_exists():
+        #     raise DuplicatedKeyException()
+        idx = self.hash_function(key)
+        item = Item(key, value)
+        self.table[idx].insert_last(item)
         self.num_items += 1
-
+                
     # Updates the value associated with key k.
     # Throws NoSuchElementException
-    def update(self, k, v): pass
+    def update(self, key, value): pass
 
     # Removes the key k, and the value associated with it.
     # Throws NoSuchElementException
-    def remove(self, k): pass
+    def remove(self, key): pass
 
     # Returns a List with all the keys in the dictionary.
     def keys(self): pass

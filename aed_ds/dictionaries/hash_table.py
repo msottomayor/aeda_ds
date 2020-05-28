@@ -10,14 +10,17 @@ class HashTable(Dictionary):
         self.num_items = 0
         self.array_size = size
         self.table = (ctypes.py_object * self.array_size)()
-        
+        self.list_keys = SinglyLinkedList()
+        self.list_values = SinglyLinkedList()
+        self.list_items = SinglyLinkedList()
+
         for i in range(self.array_size):
             self.table[i] = SinglyLinkedList()
 
     def hash_function(self, key):
         return sum([ord(c) for c in key]) % self.array_size
 
-    def key_exists(self, key): 
+    def has_key(self, key): 
         idx = self.hash_function(key)   
         it = self.table[idx].iterator()
         while it.has_next():
@@ -28,10 +31,8 @@ class HashTable(Dictionary):
     def size(self): 
         return self.num_items
 
-    def is_full(self): 
-        if self.num_items == 0:
-            return False
-        return (self.num_items / self.array_size) >= 0.3
+    def is_full(self):
+        return self.num_items == self.array_size
 
     def get(self, key):
         idx = self.hash_function(key)
@@ -43,7 +44,7 @@ class HashTable(Dictionary):
         raise NoSuchElementException()
 
     def insert(self, key, value): 
-        if self.key_exists(key):
+        if self.has_key(key):
             raise DuplicatedKeyException()
         idx = self.hash_function(key)
         item = Item(key, value)
@@ -51,6 +52,8 @@ class HashTable(Dictionary):
         self.num_items += 1
                 
     def update(self, key, value):
+        if not self.has_key(key):
+            raise NoSuchElementException()
         idx = self.hash_function(key)
         it = self.table[idx].iterator()
         while it.has_next():
@@ -59,7 +62,7 @@ class HashTable(Dictionary):
                 return cur_item.set_value(value)
         
     def remove(self, key):
-        if not self.key_exists(key):
+        if not self.has_key(key):
             raise NoSuchElementException()
         collision_list = self.table[self.hash_function(key)]
         it = collision_list.iterator()
@@ -67,33 +70,14 @@ class HashTable(Dictionary):
             pos = 0
             cur_item = it.next()
             if cur_item.get_key() == key:
-                return collision_list.remove(pos)
+                self.num_items -= 1
+                collision_list.remove(pos)
+                return cur_item.get_value()
             cur_item = cur_item.net()
             pos += 1
         
-    def keys(self):
-        for idx in range(self.array_size):  
-            colision_list = self.table[idx]
-            it = colision_list.iterator()
-            while it.has_next():
-                cur_item = it.next()
-                if cur_item.get_key():
-                    print(cur_item.get_key())
+    def keys(self): pass
         
-    def values(self): 
-        for idx in range(self.array_size):  
-            colision_list = self.table[idx]
-            it = colision_list.iterator()
-            while it.has_next():
-                cur_item = it.next()
-                if cur_item.get_key():
-                    print(cur_item.get_value())
+    def values(self): pass
 
-    def items(self): 
-        for idx in range(self.array_size):  
-            colision_list = self.table[idx]
-            it = colision_list.iterator()
-            while it.has_next():
-                cur_item = it.next()
-                if cur_item.get_key():
-                    print(f'{cur_item.get_key()}: {cur_item.get_value()}')
+    def items(self): pass

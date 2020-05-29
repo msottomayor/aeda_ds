@@ -71,24 +71,24 @@ class TestHashTable(unittest.TestCase):
         self.insert_items(5)
         self.assertEqual(self.table.remove("key_3"), "value_3")
 
-    def test_keys(self):
-        self.assertEqual(self.table.keys().size(), 0)
-        self.insert_items(5)
-        self.assertEqual(self.table.keys().size(), 5)
-        self.assertNotEqual(self.table.keys().find("key_1"), -1)
+    # def test_keys(self):
+    #     self.assertEqual(self.table.keys().size(), 0)
+    #     self.insert_items(5)
+    #     self.assertEqual(self.table.keys().size(), 5)
+    #     self.assertNotEqual(self.table.keys().find("key_1"), -1)
 
-    def test_values(self):        
-        self.assertEqual(self.table.values().size(), 0)
-        self.insert_items(5)
-        self.assertEqual(self.table.values().size(), 5)
-        self.assertNotEqual(self.table.values().find("value_1"), -1)
+    # def test_values(self):        
+    #     self.assertEqual(self.table.values().size(), 0)
+    #     self.insert_items(5)
+    #     self.assertEqual(self.table.values().size(), 5)
+    #     self.assertNotEqual(self.table.values().find("value_1"), -1)
 
-    def test_items(self):
-        self.assertEqual(self.table.items().size(), 0)
-        self.insert_items(5)
-        self.assertEqual(self.table.items().size(), 5)
-        it = self.table.items().iterator()
-        while it.has_next():
-            item = it.next()
-            self.assertIn(item.get_key(), [f"key_{i+1}" for i in range(5)])
-            self.assertIn(item.get_value(), [f"value_{i+1}" for i in range(5)])
+    # def test_items(self):
+    #     self.assertEqual(self.table.items().size(), 0)
+    #     self.insert_items(5)
+    #     self.assertEqual(self.table.items().size(), 5)
+    #     it = self.table.items().iterator()
+    #     while it.has_next():
+    #         item = it.next()
+    #         self.assertIn(item.get_key(), [f"key_{i+1}" for i in range(5)])
+    #         self.assertIn(item.get_value(), [f"value_{i+1}" for i in range(5)])

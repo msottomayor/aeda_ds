@@ -10,9 +10,6 @@ class HashTable(Dictionary):
         self.num_items = 0
         self.array_size = size
         self.table = (ctypes.py_object * self.array_size)()
-        self.list_keys = SinglyLinkedList()
-        self.list_values = SinglyLinkedList()
-        self.list_items = SinglyLinkedList()
 
         for i in range(self.array_size):
             self.table[i] = SinglyLinkedList()

@@ -3,7 +3,7 @@ from ..lists.singly_linked_list import SinglyLinkedList
 from ..exceptions import EmptyStackException, FullStackException
 
 class ListStack(Stack):
-    def __init__(self, limit=15):
+    def __init__(self, limit=None):
         self.stack = SinglyLinkedList
         self.num_elements = 0
         self.limit = limit

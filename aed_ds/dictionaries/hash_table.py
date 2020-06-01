@@ -10,6 +10,7 @@ class HashTable(Dictionary):
         self.num_items = 0
         self.array_size = size
         self.table = (ctypes.py_object * self.array_size)()
+        self.list_of_keys = SinglyLinkedList()
 
         for i in range(self.array_size):
             self.table[i] = SinglyLinkedList()
@@ -17,7 +18,7 @@ class HashTable(Dictionary):
     def hash_function(self, key):
         return sum([ord(c) for c in key]) % self.array_size
 
-    def has_key(self, key): 
+    def has_key(self, key):
         idx = self.hash_function(key)   
         it = self.table[idx].iterator()
         while it.has_next():
@@ -25,7 +26,7 @@ class HashTable(Dictionary):
             if cur_item.get_key() == key:
                 return True
     
-    def size(self): 
+    def size(self):
         return self.num_items
 
     def is_full(self):
@@ -40,7 +41,7 @@ class HashTable(Dictionary):
                 return cur_item.get_value()
         raise NoSuchElementException()
 
-    def insert(self, key, value): 
+    def insert(self, key, value):
         if self.has_key(key):
             raise DuplicatedKeyException()
         idx = self.hash_function(key)
@@ -73,8 +74,35 @@ class HashTable(Dictionary):
             cur_item = cur_item.net()
             pos += 1
         
-    def keys(self): pass
+    def keys(self):
+        list_of_keys = SinglyLinkedList()
+        for i in range(int(self.array_size)):
+            collision_list = self.table[i]
+            it = collision_list.iterator()
+            while it.has_next():
+                cur_item = it.next()
+                if cur_item.get_key():
+                    list_of_keys.insert_last(cur_item.get_key())
+        return list_of_keys
         
-    def values(self): pass
+    def values(self):
+        list_of_values = SinglyLinkedList()
+        for i in range(int(self.array_size)):
+            collision_list = self.table[i]
+            it = collision_list.iterator()
+            while it.has_next():
+                cur_item = it.next()
+                if cur_item.get_key():
+                    list_of_values.insert_last(cur_item.get_value())
+        return list_of_values
 
-    def items(self): pass
+    def items(self):
+        list_of_items = SinglyLinkedList()
+        for i in range(int(self.array_size)):
+            collision_list = self.table[i]
+            it = collision_list.iterator()
+            while it.has_next():
+                cur_item = it.next()
+                if cur_item.get_key():
+                    list_of_items.insert_last(cur_item)
+        return list_of_items

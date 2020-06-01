@@ -1,21 +1,39 @@
 from .tad_queue import Queue
 from ..lists.singly_linked_list import SinglyLinkedList
 from ..exceptions import FullQueueException, EmptyQueueException
+import ctypes
 
 class ArrayQueue(Queue):
-    # Returns true iff the queue contains no elements.
-    def is_empty(self): pass
+    def __init__(self,limit=10):
+        self.limit = limit
+        self.stack = (ctypes.py_object * self.limit)()
+        self.num_elements = 0
+        
+    def is_empty(self):
+        return self.num_elements == 0
 
-    # Returns true iff the queue cannot contain more elements.
-    def is_full(self): pass
+    def is_full(self):
+        return self.num_elements == self.limit
 
-    # Returns the number of elements in the queue.
-    def size(self): pass
+    def size(self):
+        return self.num_elements
 
-    # Inserts the specified element at the rear of the queue.
-    # Throws FullQueueException
-    def enqueue(self, element): pass
+    def enqueue(self, element):
+        if self.is_full():
+            raise FullQueueException()
+        idx = self.num_elements
+        self.stack[idx] = element
+        self.num_elements += 1
 
-    # Removes and returns the element at the front of the queue.
-    # Throws EmptyQueueException
-    def dequeue(self): pass
+    def dequeue(self): 
+        if self.is_empty():
+            raise EmptyQueueException()
+        old = self.stack[0]
+        if self.num_elements == 1:
+            self.stack = (ctypes.py_object * self.limit)()
+            self.num_elements = 0
+            return old
+        idx = self.num_elements - 1
+        self.stack = self.stack[1:idx+1]
+        self.num_elements -= 1
+        return old

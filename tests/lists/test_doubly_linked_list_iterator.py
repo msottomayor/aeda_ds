@@ -78,3 +78,6 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
         self.assertEqual(it.next(), "element 2")
         it.full_forward()
         self.assertEqual(it.previous(), "element 3")
+
+if __name__ == "__main__":
+    unittest.main()

@@ -139,3 +139,17 @@ class SinglyLinkedList(List):
     def iterator(self):
         return SinglyLinkedListIterator(self)
 
+    def sortList(self): 
+        if self.is_empty():  
+            raise EmptyListException()
+        else:
+            cur_node = self.head  
+            while cur_node.get_next():
+                idx = cur_node.get_next()
+                while idx:
+                    if cur_node.get_element() > idx.get_element():  
+                        temp = cur_node.get_element()  
+                        cur_node.set_element(idx.get_element())
+                        idx.set_element(temp)  
+                    idx = idx.get_next()  
+                cur_node = cur_node.get_next()  

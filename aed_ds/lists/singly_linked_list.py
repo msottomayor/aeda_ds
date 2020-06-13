@@ -139,7 +139,7 @@ class SinglyLinkedList(List):
     def iterator(self):
         return SinglyLinkedListIterator(self)
 
-    def sortList(self): 
+    def sort(self): 
         if self.is_empty():  
             raise EmptyListException()
         else:

@@ -1,6 +1,6 @@
 from .tad_tree import Tree
 from ..dictionaries.tad_ordered_dictionary import OrderedDictionary
-from ..exceptions import DuplicatedKeyException, NoSuchElementException, EmptyDictionaryException
+from ..exceptions import DuplicatedKeyException, NoSuchElementException, EmptyDictionaryException, EmptyTreeException
 from .nodes.binary_nodes import BinarySearchTreeNode
 
 
@@ -19,7 +19,18 @@ class BinarySearchTree(OrderedDictionary, Tree):
 
     # Returns the value associated with key k.
     # Throws NoSuchElementException
-    def get(self, k): pass
+    def get(self, k):
+        return self.get_element(self.root, k)
+    
+    def get_element(self, root, k):
+        if root is None:
+            raise NoSuchElementException()
+        elif root.get_key() == k:
+            return root.get_element() 
+        elif root.get_key() > k:
+            return self.get_element(root.get_left_child(), k)
+        else:
+            return self.get_element(root.get_right_child(), k)
 
     # Inserts a new value, associated with key k.
     # Throws DuplicatedKeyException
@@ -43,13 +54,22 @@ class BinarySearchTree(OrderedDictionary, Tree):
 
     # Updates the value associated with key k.
     # Throws NoSuchElementException
-    def update(self, k, v): pass
+    def update(self, k, v):
+        self.root = self.update_element(self.root, k, v)
+
+    def update_element(self, root, k, v):
+        if root is None:
+            raise NoSuchElementException()
+        elif root.get_key() == k:
+            return root.set_element(v)
+        elif root.get_key() > k:
+            return self.get_element(root.get_left_child(), k)
+        else:
+            return self.get_element(root.get_right_child(), k)
 
     # Removes the key k, and the value associated with it.
     # Throws NoSuchElementException
-    def remove(self, k):
-        if k.is_leaf():
-            pass
+    def remove(self, k): pass
 
     # Returns a List with all the keys in the dictionary.
     def keys(self): pass
@@ -96,7 +116,10 @@ class BinarySearchTree(OrderedDictionary, Tree):
 
     # Returns the height of the tree
     # Throws EmptyTreeException
-    def height(self): pass
+    def height(self):
+        if self.is_empty():
+            raise EmptyTreeException()
+
 
     # Returns True if the tree is empty
     def is_empty(self):
